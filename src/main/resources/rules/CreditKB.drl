@@ -1,0 +1,44 @@
+package ru.nikitamedvedev
+import ru.nikitamedvedev.service.DiscountService
+import ru.nikitamedvedev.domain.*
+
+global ru.nikitamedvedev.service.DiscountCalculator calculator;
+
+rule "Age"
+    when
+        customer : Customer(age < 14)
+        discount: Discount(hasDiscount == true)
+    then
+        discount.setHasDiscount(false);
+end
+
+rule "SpentMoney"
+    when
+        customer: Customer()
+        discount: Discount(hasDiscount == true)
+        Customer(
+            (sex == true && spentMoney / age  < 100) ||
+            (sex == false && spentMoney / age < 80)
+        )
+    then
+        discount.setHasDiscount(false);
+end
+
+rule "Compute"
+    when
+        customer: Customer()
+        discount: Discount(hasDiscount == true)
+    then
+        discount.setDiscount(
+                calculator.calculate(customer.getSpentMoney(), customer.getJoinedYearsAgo())
+        );
+end
+
+rule "LowComputed"
+    when
+        customer: Customer($p: purchase)
+        discount: Discount(hasDiscount == true, discount * $p / 100 < 50)
+    then
+        discount.setHasDiscount(false);
+end
+
