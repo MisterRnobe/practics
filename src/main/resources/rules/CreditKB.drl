@@ -1,6 +1,6 @@
 package ru.nikitamedvedev
-import ru.nikitamedvedev.service.DiscountService
-import ru.nikitamedvedev.domain.*
+import ru.nikitamedvedev.service.DiscountService;
+import ru.nikitamedvedev.domain.*;
 
 global ru.nikitamedvedev.service.DiscountCalculator calculator;
 

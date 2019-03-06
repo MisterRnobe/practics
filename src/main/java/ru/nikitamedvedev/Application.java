@@ -14,9 +14,7 @@ import java.io.PrintStream;
 public class Application {
 
     public static void main(String[] args) {
-        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
-        context.register(Application.class);
-        context.refresh();
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(Application.class);
         UserInterface userInterface = context.getBean(UserInterface.class);
         userInterface.run();
     }
